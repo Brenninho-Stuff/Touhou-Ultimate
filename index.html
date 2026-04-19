@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Touhou Ultimate - Web Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Canvas onde o jogo C++ renderiza (via WebAssembly) -->
+        <canvas id="gameCanvas" width="640" height="960"></canvas>
+        
+        <!-- Overlay UI -->
+        <div class="game-ui">
+            <div class="stats">
+                <div class="stat">Score: <span id="score">0</span></div>
+                <div class="stat">Hi-Score: <span id="hiscore">0</span></div>
+                <div class="stat">Player: <span id="playerName">Reimu</span></div>
+            </div>
+            
+            <div class="resources">
+                <div class="resource">❤️ <span id="lives">3</span></div>
+                <div class="resource">💣 <span id="bombs">3</span></div>
+                <div class="resource">⚡ <span id="power">1.00</span></div>
+            </div>
+            
+            <div class="graze-meter">
+                <div class="graze-label">Graze: <span id="graze">0</span></div>
+                <div class="graze-bar">
+                    <div class="graze-fill" id="grazeFill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menu de Pausa -->
+        <div class="pause-menu" id="pauseMenu" style="display: none;">
+            <h2>PAUSED</h2>
+            <button onclick="gameManager.resume()">Resume</button>
+            <button onclick="gameManager.restart()">Restart</button>
+            <button onclick="gameManager.quit()">Quit</button>
+        </div>
+        
+        <!-- Tela de Game Over -->
+        <div class="gameover-screen" id="gameoverScreen" style="display: none;">
+            <h2>GAME OVER</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <input type="text" id="playerNameInput" placeholder="Enter your name" maxlength="10">
+            <button onclick="gameManager.submitScore()">Submit Score</button>
+            <button onclick="gameManager.restart()">Play Again</button>
+        </div>
+        
+        <!-- Controles (Mobile) -->
+        <div class="mobile-controls">
+            <div class="dpad">
+                <button class="dpad-up" onmousedown="gameManager.moveStart('up')" onmouseup="gameManager.moveEnd('up')">▲</button>
+                <button class="dpad-left" onmousedown="gameManager.moveStart('left')" onmouseup="gameManager.moveEnd('left')">◀</button>
+                <button class="dpad-down" onmousedown="gameManager.moveStart('down')" onmouseup="gameManager.moveEnd('down')">▼</button>
+                <button class="dpad-right" onmousedown="gameManager.moveStart('right')" onmouseup="gameManager.moveEnd('right')">▶</button>
+            </div>
+            <div class="action-buttons">
+                <button class="action-shoot" onmousedown="gameManager.shoot(true)" onmouseup="gameManager.shoot(false)">SHOT</button>
+                <button class="action-bomb" onclick="gameManager.bomb()">BOMB</button>
+                <button class="action-focus" onmousedown="gameManager.focus(true)" onmouseup="gameManager.focus(false)">FOCUS</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="game.js"></script>
+</body>
+</html>
